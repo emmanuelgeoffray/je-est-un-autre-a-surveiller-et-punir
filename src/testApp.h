@@ -4,6 +4,8 @@
 #include "ofxCv.h"
 
 #include "ofxFaceTracker.h"
+#include "ofxImageSequenceRecorder.h"
+#include "ofxCvPiCam.h"
 
 class testApp : public ofBaseApp {
 public:
@@ -12,7 +14,8 @@ public:
 	void draw();
 	void keyPressed(int key);
 	
-	ofVideoGrabber cam;
+  //ofVideoGrabber cam;
+  ofxCvPiCam cam;
 	ofxFaceTracker tracker;
 	
 	cv::Mat grayFloat;
@@ -21,4 +24,5 @@ public:
 	float scale;
 	ofMatrix4x4 rotationMatrix;
 	
+  ofxImageSequenceRecorder recorder;    
 };

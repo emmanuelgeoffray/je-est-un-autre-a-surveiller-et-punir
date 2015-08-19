@@ -1,3 +1,5 @@
 ofxCv
 ofxOpenCv
 ofxFaceTracker
+ofxImageSequenceRecorder
+ofxCvPiCam
