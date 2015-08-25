@@ -5,7 +5,9 @@
 
 #include "ofxFaceTracker.h"
 #include "ofxImageSequenceRecorder.h"
-#include "ofxCvPiCam.h"
+#ifdef __arm__
+  #include "ofxCvPiCam.h"
+#endif
 
 class testApp : public ofBaseApp {
 public:
@@ -14,8 +16,11 @@ public:
 	void draw();
 	void keyPressed(int key);
 	
-  //ofVideoGrabber cam;
+#ifdef __arm__
   ofxCvPiCam cam;
+#else
+  ofVideoGrabber cam;
+#endif
 	ofxFaceTracker tracker;
 	
 	cv::Mat grayFloat;

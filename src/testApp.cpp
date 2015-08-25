@@ -18,6 +18,7 @@ void testApp::setup() {
   camWidth = 640;
   camHeight = 480;
 	cam.setup(camWidth, camHeight, true);
+	cam.initGrabber(640, 480);
 	trackerWidth = 640*0.2;
 	tracker.setup();
   tracker.setRescale(trackerWidth/camWidth);
@@ -30,8 +31,15 @@ void testApp::setup() {
 }
 
 void testApp::update() {
+
+#ifdef __arm__
   frame = cam.grab();
   if(!frame.empty()) {
+#else
+	cam.update();
+	if(cam.isFrameNew()) {
+    frame = toCv(cam);
+#endif
 		tracker.update(toCv(frame));
 		position = tracker.getPosition();
 		scale = tracker.getScale();
@@ -39,7 +47,8 @@ void testApp::update() {
 		
 		if(tracker.getFound()) {
       roi = tracker.getImageFeature(ofxFaceTracker::LEFT_EYE).getBoundingBox();
-      roi.scaleFromCenter(2);
+      roi.scaleFromCenter(3);
+      roi.scaleFromCenter(16/9.*roi.getHeight()/roi.getWidth(), 1);
       // TODO: avoid copy
       frame(toCv(roi)).copyTo(frameR);
 
@@ -56,7 +65,7 @@ void testApp::draw() {
   if(tracker.getFound() && !frame.empty()){
     ofPushMatrix();
     ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-    scale = ofGetWidth()/roi.getWidth();
+    scale = ofGetWidth()/roi.getWidth()*1.2;
     ofScale(scale, scale, 1);
     ofTranslate(-roi.getWidth()/2, -roi.getHeight()/2);
     drawMat(frameR,0,0);
