@@ -25,4 +25,13 @@ public:
 	ofMatrix4x4 rotationMatrix;
 	
   ofxImageSequenceRecorder recorder;    
+
+
+  ofxCv::Mat frame, frameR;
+  float camWidth, camHeight;
+  ofRectangle roi;
+  float trackerWidth;
+  ofPixels pixels;
+  ofImage screencap;
+  ofFbo fbo;
 };
