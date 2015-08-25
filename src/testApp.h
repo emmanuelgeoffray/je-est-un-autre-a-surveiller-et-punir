@@ -5,6 +5,7 @@
 
 #include "ofxFaceTracker.h"
 #include "ofxImageSequenceRecorder.h"
+#include "ofxImageSequence.h"
 #ifdef __arm__
   #include "ofxCvPiCam.h"
 #endif
@@ -30,6 +31,7 @@ public:
 	ofMatrix4x4 rotationMatrix;
 	
   ofxImageSequenceRecorder recorder;    
+	ofxImageSequence sequence;
 
 
   ofxCv::Mat frame, frameR;

@@ -23,10 +23,17 @@ void testApp::setup() {
 	tracker.setup();
   tracker.setRescale(trackerWidth/camWidth);
 
+  // recorder
   recorder.setPrefix("frame"); // this directory must already exist
   recorder.setFormat("jpg"); // png is really slow but high res, bmp is fast but big, jpg is just right
   recorder.setNumberWidth(8); // png is really slow but high res, bmp is fast but big, jpg is just right
   recorder.startThread(false, true);   
+
+  // player
+	sequence.enableThreadedLoad(true);
+	//sequence.loadSequence("frame", "jpg", 1, 11, 8);
+	sequence.loadSequence(".");
+	sequence.setFrameRate(10); 
 
 }
 
@@ -60,6 +67,7 @@ void testApp::update() {
 }
 
 void testApp::draw() {
+		ofBackground(0);
   ofSetColor(255);
 
   if(tracker.getFound() && !frame.empty()){
@@ -72,8 +80,18 @@ void testApp::draw() {
     ofPopMatrix();
   }
   else {
-    drawMat(frame,0,0);
-    tracker.draw();
+    ofTexture img = sequence.getTextureForTime(ofGetElapsedTimef());
+    ofLog() << "tex w " << img.getWidth();
+    
+    ofPushMatrix();
+    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+    scale = ofGetWidth()/img.getWidth()*1.2;
+    ofScale(scale, scale, 1);
+    ofTranslate(-img.getWidth()/2, -img.getHeight()/2);
+    img.draw(0,0);
+    ofPopMatrix();
+    
+    //img.draw(0,0);
   }
 
 
