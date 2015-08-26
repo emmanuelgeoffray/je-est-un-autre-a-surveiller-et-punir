@@ -27,17 +27,29 @@ void testApp::setup() {
 	tracker.setup();
   tracker.setRescale(trackerWidth/camWidth);
 
-  // recorder
-  recorder.setPrefix("frames/frame"); // this directory must already exist
-  recorder.setFormat("jpg"); // png is really slow but high res, bmp is fast but big, jpg is just right
-  recorder.setNumberWidth(8); // png is really slow but high res, bmp is fast but big, jpg is just right
-  recorder.startThread(false, true);   
-
   // player
 	sequence.enableThreadedLoad(true);
 	//sequence.loadSequence("frame", "jpg", 1, 11, 8);
 	sequence.loadSequence("frames");
 	sequence.setFrameRate(5); 
+
+  // recorder
+  string folder = "frames";
+  string prefix = "frame";
+  string ext = "jpg";
+  
+  recorder.setPrefix(folder+"/"+prefix); // this directory must already exist
+  recorder.setFormat(ext); // png is really slow but high res, bmp is fast but big, jpg is just right
+  recorder.setNumberWidth(8);
+  
+  // set initial number to avoid overwrite of previous sessions
+  ofDirectory dir;
+	dir.allowExt(ext);
+	int numFiles = dir.listDir(folder);
+  recorder.setCounter(numFiles);
+
+  recorder.startThread(false, true);   
+
 
   isDebug = false;
 }
