@@ -23,7 +23,7 @@ void testApp::setup() {
 #else
 	cam.initGrabber(640, 480);
 #endif
-	trackerWidth = 640*0.2;
+	float trackerWidth = 640*0.2;
 	tracker.setup();
   tracker.setRescale(trackerWidth/camWidth);
 
@@ -39,6 +39,7 @@ void testApp::setup() {
 	sequence.loadSequence("frames");
 	sequence.setFrameRate(5); 
 
+  isDebug = false;
 }
 
 void testApp::update() {
@@ -61,17 +62,20 @@ void testApp::update() {
       roi.scaleFromCenter(3);
       roi.scaleFromCenter(16/9.*roi.getHeight()/roi.getWidth(), 1);
       // TODO: avoid copy
-      frame(toCv(roi)).copyTo(frameR);
+      if (roi.getWidth() > 0 && roi.getWidth() < frame.cols && roi.getHeight() > 0 && roi.getHeight() < frame.rows){
+        frame(toCv(roi)).copyTo(frameR);
+      }
 
       // record
       toOf(frameR, pixels);
       recorder.addFrame(pixels);
+      //sequence.loadSequence("frames");
 		}
 	}
 }
 
 void testApp::draw() {
-		ofBackground(0);
+	ofBackground(0);
   ofSetColor(255);
 
   if(tracker.getFound() && !frame.empty()){
@@ -84,7 +88,10 @@ void testApp::draw() {
     ofPopMatrix();
   }
   else {
-    if(sequence.isLoading()){
+    if (isDebug && !frame.empty()){
+      drawMat(frame,0,0);
+    }
+    else if(sequence.isLoading()){
       ofBackground(255,0,0);
     }
     else{
@@ -111,5 +118,8 @@ void testApp::draw() {
 void testApp::keyPressed(int key) {
 	if(key == 'r') {
 		tracker.reset();
+	}
+	else if(key == 'd') {
+    isDebug = !isDebug;
 	}
 }

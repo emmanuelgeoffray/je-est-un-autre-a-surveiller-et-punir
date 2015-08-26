@@ -37,8 +37,7 @@ public:
   ofxCv::Mat frame, frameR;
   float camWidth, camHeight;
   ofRectangle roi;
-  float trackerWidth;
   ofPixels pixels;
-  ofImage screencap;
-  ofFbo fbo;
+
+  bool isDebug;
 };
