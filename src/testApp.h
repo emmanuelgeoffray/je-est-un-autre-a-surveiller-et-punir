@@ -10,6 +10,15 @@
   #include "ofxCvPiCam.h"
 #endif
 
+class ofxImageSequenceCustom : public ofxImageSequence {
+  public:
+  void push_back(ofPixels& pixels){
+    sequence.push_back(pixels);
+		loadFailed.push_back(false);
+    loaded = true;
+  }
+};
+
 class testApp : public ofBaseApp {
 public:
 	void setup();
@@ -31,7 +40,7 @@ public:
 	ofMatrix4x4 rotationMatrix;
 	
   ofxImageSequenceRecorder recorder;    
-	ofxImageSequence sequence;
+	ofxImageSequenceCustom sequence;
 
 
   ofxCv::Mat frame, frameR;

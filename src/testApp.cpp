@@ -18,19 +18,18 @@ void testApp::setup() {
   camHeight = 730;
   camWidth = 640;
   camHeight = 480;
-#ifdef __arm__
+  camWidth = 1024*2;
+  camHeight = 768*2;
 	cam.setup(camWidth, camHeight, true);
-#else
-	cam.initGrabber(640, 480);
-#endif
 	float trackerWidth = 640*0.2;
 	tracker.setup();
   tracker.setRescale(trackerWidth/camWidth);
 
   // player
-	sequence.enableThreadedLoad(true);
+	//sequence.enableThreadedLoad(true);
 	//sequence.loadSequence("frame", "jpg", 1, 11, 8);
 	sequence.loadSequence("frames");
+  sequence.preloadAllFrames();
 	sequence.setFrameRate(5); 
 
   // recorder
@@ -82,6 +81,7 @@ void testApp::update() {
       toOf(frameR, pixels);
       recorder.addFrame(pixels);
       //sequence.loadSequence("frames");
+      sequence.push_back(pixels);
 		}
 	}
 }
