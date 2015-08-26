@@ -5,6 +5,7 @@ using namespace ofxCv;
 
 
 void testApp::setup() {
+  ofHideCursor();
 	ofSetFrameRate(60);
   ofSetFullscreen(true);
 	ofSetVerticalSync(true);
@@ -17,14 +18,17 @@ void testApp::setup() {
   camHeight = 730;
   camWidth = 640;
   camHeight = 480;
+#ifdef __arm__
 	cam.setup(camWidth, camHeight, true);
+#else
 	cam.initGrabber(640, 480);
+#endif
 	trackerWidth = 640*0.2;
 	tracker.setup();
   tracker.setRescale(trackerWidth/camWidth);
 
   // recorder
-  recorder.setPrefix("frame"); // this directory must already exist
+  recorder.setPrefix("frames/frame"); // this directory must already exist
   recorder.setFormat("jpg"); // png is really slow but high res, bmp is fast but big, jpg is just right
   recorder.setNumberWidth(8); // png is really slow but high res, bmp is fast but big, jpg is just right
   recorder.startThread(false, true);   
@@ -32,8 +36,8 @@ void testApp::setup() {
   // player
 	sequence.enableThreadedLoad(true);
 	//sequence.loadSequence("frame", "jpg", 1, 11, 8);
-	sequence.loadSequence(".");
-	sequence.setFrameRate(10); 
+	sequence.loadSequence("frames");
+	sequence.setFrameRate(5); 
 
 }
 
@@ -80,18 +84,24 @@ void testApp::draw() {
     ofPopMatrix();
   }
   else {
-    ofTexture img = sequence.getTextureForTime(ofGetElapsedTimef());
-    ofLog() << "tex w " << img.getWidth();
-    
-    ofPushMatrix();
-    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-    scale = ofGetWidth()/img.getWidth()*1.2;
-    ofScale(scale, scale, 1);
-    ofTranslate(-img.getWidth()/2, -img.getHeight()/2);
-    img.draw(0,0);
-    ofPopMatrix();
-    
-    //img.draw(0,0);
+    if(sequence.isLoading()){
+      ofBackground(255,0,0);
+    }
+    else{
+      ofBackground(0);
+      ofTexture img = sequence.getTextureForTime(ofGetElapsedTimef());
+      //ofLog() << "tex w " << img.getWidth();
+      
+      ofPushMatrix();
+      ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+      scale = ofGetWidth()/img.getWidth()*1.2;
+      ofScale(scale, scale, 1);
+      ofTranslate(-img.getWidth()/2, -img.getHeight()/2);
+      img.draw(0,0);
+      ofPopMatrix();
+      
+      //img.draw(0,0);
+    }
   }
 
 
