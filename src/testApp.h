@@ -47,6 +47,7 @@ public:
   float camWidth, camHeight;
   ofRectangle roi;
   ofPixels pixels;
+  ofTexture cameraDebug;
 
   bool isDebug;
 };
