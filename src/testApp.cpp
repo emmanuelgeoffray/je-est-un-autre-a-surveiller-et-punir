@@ -132,6 +132,10 @@ void testApp::draw() {
       //ofDrawRectangle(roi);
       ofRect(roi);
       ofPopMatrix();
+
+      ofSetColor(255);
+      string msg = "fps: " + ofToString(ofGetFrameRate(), 2);
+      ofDrawBitmapString(msg, 10, 20);
   }
 
 
