@@ -100,10 +100,7 @@ void testApp::draw() {
     ofPopMatrix();
   }
   else {
-    if (isDebug && !frame.empty()){
-      drawMat(frame,0,0);
-    }
-    else if(sequence.isLoading()){
+    if(sequence.isLoading()){
       ofBackground(255,0,0);
     }
     else{
@@ -122,6 +119,20 @@ void testApp::draw() {
       //img.draw(0,0);
     }
   }
+
+  if (isDebug){
+      ofPushMatrix();
+      scale = ofGetWidth()/camWidth*0.3;
+      ofTranslate(scale*camWidth/2, scale*camHeight/2);
+      ofScale(scale, scale, 1);
+      ofTranslate(-camWidth/2, -camHeight/2);
+      drawMat(frame,0,0);
+      tracker.getImageFeature(ofxFaceTracker::LEFT_EYE).draw();
+      ofNoFill();
+      ofDrawRectangle(roi);
+      ofPopMatrix();
+  }
+
 
 
 
