@@ -129,7 +129,8 @@ void testApp::draw() {
       drawMat(frame,0,0);
       tracker.getImageFeature(ofxFaceTracker::LEFT_EYE).draw();
       ofNoFill();
-      ofDrawRectangle(roi);
+      //ofDrawRectangle(roi);
+      ofRect(roi);
       ofPopMatrix();
   }
 
