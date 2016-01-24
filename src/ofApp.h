@@ -10,6 +10,9 @@
   #include "ofxCvPiCam.h"
 #endif
 
+using namespace cv;
+using namespace ofxCv;
+
 class ofxImageSequenceCustom : public ofxImageSequence {
   public:
   void push_back(ofPixels& pixels){
@@ -19,7 +22,7 @@ class ofxImageSequenceCustom : public ofxImageSequence {
   }
 };
 
-class testApp : public ofBaseApp {
+class ofApp : public ofBaseApp {
 public:
 	void setup();
 	void update();
@@ -33,7 +36,7 @@ public:
 #endif
 	ofxFaceTracker tracker;
 	
-	cv::Mat grayFloat;
+	Mat grayFloat;
 
 	ofVec2f position;
 	float scale;
@@ -43,7 +46,7 @@ public:
 	ofxImageSequenceCustom sequence;
 
 
-  ofxCv::Mat frame, frameR;
+  Mat frame, frameR;
   float camWidth, camHeight;
   ofRectangle roi;
   ofPixels pixels;

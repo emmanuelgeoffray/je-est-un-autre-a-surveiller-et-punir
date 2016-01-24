@@ -1,4 +1,4 @@
-#include "testApp.h"
+#include "ofApp.h"
 
 
 using namespace ofxCv;
@@ -6,7 +6,7 @@ using namespace ofxCv;
 bool isTracking = false;
 bool isRecording = false;
 
-void testApp::setup() {
+void ofApp::setup() {
   ofHideCursor();
 	ofSetFrameRate(60);
   ofSetFullscreen(true);
@@ -64,7 +64,7 @@ void testApp::setup() {
   isDebug = false;
 }
 
-void testApp::update() {
+void ofApp::update() {
 
 #ifdef __arm__
   frame = cam.grab();
@@ -106,12 +106,12 @@ void testApp::update() {
     void copy(S& src, ofTexture& tex) {
         imitate(tex, src);
         int w = tex.getWidth(), h = tex.getHeight();
-        int glType = tex.getTextureData().glTypeInternal;
+        int glType = tex.getTextureData().glInternalFormat;
         Mat mat = toCv(src);
 		tex.loadData(mat.ptr(), w, h, glType);
     }
 
-void testApp::draw() {
+void ofApp::draw() {
 	ofBackground(0);
   ofSetColor(255);
 
@@ -179,7 +179,7 @@ void testApp::draw() {
 
 }
 
-void testApp::keyPressed(int key) {
+void ofApp::keyPressed(int key) {
 	if(key == ' ') {
 		tracker.reset();
 	}
